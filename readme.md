@@ -4,6 +4,36 @@ This project provides an abstraction for fetching user data from different sourc
 - **Internal User API**: A mock API that generates fake user data.
 - **External User API**: An API that fetches real user data from an external service.
 
+1. **Clone the repository:**
+
+   ```bash
+   git clone https://github.com/OkayJosh/API-Switcher
+   cd API-Switcher
+   
+2. **Create and activate a virtual environment:**
+
+##### You can use venv (Python's built-in virtual environment module) to create a virtual environment.
+
+   ```bash
+    python -m venv .venv
+   ```
+
+For Windows:
+
+```bash
+  .venv\Scripts\activate
+```
+
+For macOS/Linux:
+```bash
+source .venv/bin/activate
+```
+
+3. **install the requirements packages for the project:**
+
+```bash
+    pip install -r requirements.txt
+```
 
 ## How It Works
 
