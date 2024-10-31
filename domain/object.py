@@ -17,3 +17,7 @@ class User:
     name: str
     age: int
     address: str
+    gender: str
+    email: str
+    phone_number: str
+
