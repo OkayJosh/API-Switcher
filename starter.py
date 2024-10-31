@@ -1,5 +1,7 @@
 from domain.interface import InternalUserAPI, ExternalUserAPI, API
+from db_connection import SqliteConnection
 
+init_db = SqliteConnection().schema_defination('users')
 
 def create_user_api(api_type: str = 'internal') -> API:
     """
@@ -25,17 +27,19 @@ def create_user_api(api_type: str = 'internal') -> API:
 if __name__ == '__main__':
     # Unified API access, caller doesn't need to know the underlying API type
     internal_api = create_user_api(api_type='internal')
-    external_api = create_user_api(api_type='external')
+    # external_api = create_user_api(api_type='external')
 
     # Fetch users from both internal and external APIs
     result_internal = internal_api.users(count=10)
-    result_external = external_api.users(count=20)
+    # result_external = external_api.users(count=20)
+
+    internal_api.save_data_in_db(result_internal)
 
     # Display the results
     print("### Internal API Result (Mock Data) ###")
-    print(result_internal)
+    print(internal_api.fetch_from_db())
 
     print("\n######################################\n")
 
     print("### External API Result (Real Data) ###")
-    print(result_external)
+    # print(result_external)
