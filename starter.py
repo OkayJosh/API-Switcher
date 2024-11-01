@@ -1,8 +1,12 @@
+import os
+import django
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
+
+django.setup()
+
 from domain.interface import InternalUserAPI, ExternalUserAPI, API
-from db_connection import SqliteConnection
 
-init_db = SqliteConnection().schema_defination('users')
-
+# init_db = SqliteConnection().schema_defination('users')
 def create_user_api(api_type: str = 'internal') -> API:
     """
     Factory method to create the appropriate User API instance based on the type.
