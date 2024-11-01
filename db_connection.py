@@ -1,7 +1,6 @@
 import sqlite3
 from typing import List
-
-
+from user.models import User
 
 class SqliteConnection:
     """
@@ -71,3 +70,20 @@ class SqliteConnection:
         To safely closed the open connection to the sqlite db
         """
         self.connection.close()
+
+
+class DjangoORMConnection:
+
+    def __init__(self) -> None:
+        self.app = User.objects
+
+    def schema_defination(self, model_name=None):
+        # execute_from_command_line(['manage.py', 'makemigration'])
+        # execute_from_command_line(['manage.py', 'migrate'])
+        ...
+
+    def insert(self, **kwargs):
+        self.app.create(**kwargs)
+
+    def select(self, limit=None):
+        return self.app.all()
