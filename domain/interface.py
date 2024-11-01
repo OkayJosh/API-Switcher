@@ -4,6 +4,7 @@ from domain.port import UserPort
 from db_connection import SqliteConnection
 import requests
 import sqlite3
+from db_connection import  DjangoORMConnection
 
 class InternalUserAPI(UserPort):
     """
@@ -65,20 +66,30 @@ class InternalUserAPI(UserPort):
         Concreate implementation of saving to the db
         """
         # return super().save(user)
-        sq_connection = SqliteConnection()
+        # sq_connection = SqliteConnection()
+        # for user in users:
+        #     sq_connection.insertion('users', **user)
+        # sq_connection.close()
+        connection = DjangoORMConnection()
         for user in users:
-            sq_connection.insertion('users', **user)
-        sq_connection.close()
+            connection.insert(**user)
 
     def fetch_from_db(self) -> List:
         """
         Select all users from the database
         """
-        sq_connection = SqliteConnection()
-        return sq_connection.select()
+        # sq_connection = SqliteConnection()
+        # return sq_connection.select()
+
+        connection = DjangoORMConnection()
+        return connection.select(
+
+        ).values('name', 'age', 
+                 'gender', 'email',
+                 'address', 'phone_number')
 
 
-        return user_list
+        # return user_list
 
 
 class ExternalUserAPI(UserPort):
