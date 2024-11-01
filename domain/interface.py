@@ -1,7 +1,10 @@
 from typing import List
 from domain.object import User
 from domain.port import UserPort
+from db_connection import SqliteConnection
 import requests
+import sqlite3
+from db_connection import  DjangoORMConnection
 
 class InternalUserAPI(UserPort):
     """
@@ -51,9 +54,42 @@ class InternalUserAPI(UserPort):
             user_list.append(User(
                 name=f'josh at {number}',
                 age=number + 1,
-                address=f'my address @ {number}').__dict__)
+                address=f'my address @ {number}',
+                gender=f'male @ {number}',
+                email='bayonic1@gmail.com',
+                phone_number= '07089891226').__dict__)
 
         return user_list
+    
+    def save(self, users: List[dict]) -> None:
+        """
+        Concreate implementation of saving to the db
+        """
+        # return super().save(user)
+        # sq_connection = SqliteConnection()
+        # for user in users:
+        #     sq_connection.insertion('users', **user)
+        # sq_connection.close()
+        connection = DjangoORMConnection()
+        for user in users:
+            connection.insert(**user)
+
+    def fetch_from_db(self) -> List:
+        """
+        Select all users from the database
+        """
+        # sq_connection = SqliteConnection()
+        # return sq_connection.select()
+
+        connection = DjangoORMConnection()
+        return connection.select(
+
+        ).values('name', 'age', 
+                 'gender', 'email',
+                 'address', 'phone_number')
+
+
+        # return user_list
 
 
 class ExternalUserAPI(UserPort):
@@ -159,10 +195,22 @@ class ExternalUserAPI(UserPort):
             user_list.append({
                 'name': f'{user.get("lastName")} - {user.get("firstName")}',
                 'age': user.get("age"),
-                'address': user.get("address")
+                'address': user.get("address"),
+                'gender': user.get("gender"),
+                'email': user.get("email"),
+                'phone_number': user.get("phone_number")
             })
 
         return user_list
+    
+    def save(self, users: List[dict]) -> None:
+        """
+        Concreate implementation of saving to the db
+        """
+        # return super().save(user)
+        sq_connection = SqliteConnection()
+        for user in users:
+            sq_connection.insertion('users', **user)
 
 
 class API:
@@ -210,3 +258,12 @@ class API:
             users = api.users(5)
         """
         return self.api.fetch(count)
+    
+    def save_data_in_db(self, users: List[dict]) -> None:
+        """
+        Save the data in the database
+        """
+        self.api.save(users)
+
+    def fetch_from_db(self) -> List:
+        return self.api.fetch_from_db()
